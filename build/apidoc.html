@@ -61,12 +61,247 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.gulp-include">module gulp-include</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-include.gulp-include">
+            function <span class="apidocSignatureSpan"></span>gulp-include
+            <span class="apidocSignatureSpan">(params)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-include.toString">
+            function <span class="apidocSignatureSpan">gulp-include.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.gulp-include.toString">module gulp-include.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-include.toString.toString">
+            function <span class="apidocSignatureSpan">gulp-include.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.gulp-include" id="apidoc.module.gulp-include">module gulp-include</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-include.gulp-include" id="apidoc.element.gulp-include.gulp-include">
+        function <span class="apidocSignatureSpan"></span>gulp-include
+        <span class="apidocSignatureSpan">(params)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">gulp-include = function (params) {
+  params = params || {};
+
+  var SourceMapGenerator = require(&#x27;source-map&#x27;).SourceMapGenerator;
+  var SourceMapConsumer = require(&#x27;source-map&#x27;).SourceMapConsumer;
+
+  var extensions = null, // The extension to be searched after
+      includedFiles = [], // Keeping track of what files have been included
+      includePaths = false, // The paths to be searched
+      hardFail = false; // Throw error when no match
+
+  // Check for includepaths in the params
+  if (params.includePaths) {
+    if (typeof params.includePaths == &#x22;string&#x22;) {
+      // Arrayify the string
+      includePaths = [params.includePaths];
+    }else if (Array.isArray(params.includePaths)) {
+      // Set this array to the includepaths
+      includePaths = params.includePaths;
+    }
+  }
+
+  // Toggle error reporting
+  if (params.hardFail != undefined) {
+    hardFail = params.hardFail;
+  }
+
+  if (params.extensions) {
+    extensions = typeof params.extensions === &#x27;string&#x27; ? [params.extensions] : params.extensions;
+  }
+
+  function include(file, callback) {
+    if (file.isNull()) {
+      return callback(null, file);
+    }
+
+    if (file.isStream()) {
+      throw new gutil.PluginError(&#x27;gulp-include&#x27;, &#x27;stream not supported&#x27;);
+    }
+
+    if (file.isBuffer()) {
+      var result = processInclude(String(file.contents), file.path, file.sourceMap);
+      file.contents = new Buffer(result.content);
+
+      if (file.sourceMap &#x26;&#x26; result.map) {
+        if (Object.prototype.toString.call(result.map) === &#x27;[object String]&#x27;) {
+          result.map = JSON.parse(result.map);
+        }
+
+        // relative-ize the paths in the map
+        result.map.file = path.relative(file.base, result.map.file);
+        result.map.sources.forEach(function (source, q) {
+          result.map.sources[q] = path.relative(file.base, result.map.sources[q]);
+        });
+
+        applySourceMap(file, result.map);
+      }
+    }
+
+    callback(null, file);
+  }
+
+  function processInclude(content, filePath, sourceMap) {
+    var matches = content.match(/^(\s+)?(\/\/|\/\*|\#|\&#x3c;\!\-\-)(\s+)?=(\s+)?(include|require)(.+$)/mg);
+    var relativeBasePath = path.dirname(filePath);
+
+    if (!matches) return {content: content, map: null};
+
+    // Apply sourcemaps
+    var map = null, mapSelf, lastMappedLine, currentPos, insertedLines;
+    if (sourceMap) {
+      map = new SourceMapGenerator({file: unixStylePath(filePath)});
+      lastMappedLine = 1;
+      currentPos = 0;
+      insertedLines = 0;
+
+      mapSelf = function (currentLine) { // maps current file between matches and after all matches
+        var currentOrigLine = currentLine - insertedLines;
+
+        for (var q = (currentLine - lastMappedLine); q &#x3e; 0; q--) {
+          map.addMapping({
+            generated: {
+              line: currentLine - q,
+              column: 0
+            },
+            original: {
+              line: currentOrigLine - q,
+              column: 0
+            },
+            source: filePath
+          });
+        }
+
+        lastMappedLine = currentLine;
+      };
+    }
+
+    for (var i = 0; i &#x3c; matches.length; i++) {
+      var leadingWhitespaceMatch = matches[i].match(/^\s*/);
+      var leadingWhitespace = null;
+      if (leadingWhitespaceMatch) {
+        leadingWhitespace = leadingWhitespaceMatch[0].replace(&#x22;\n&#x22;, &#x22;&#x22;);
+      }
+
+      // Remove beginnings, endings and trim.
+      var includeCommand = matches[i]
+        .replace(/\s+/g, &#x22; &#x22;)
+        .replace(/(\/\/|\/\*|\#|&#x3c;!--)(\s+)?=(\s+)?/g, &#x22;&#x22;)
+        .replace(/(\*\/|--&#x3e;)$/g, &#x22;&#x22;)
+        .replace(/[&#x27;&#x22;]/g, &#x22;&#x22;)
+        .trim();
+
+      var split = includeCommand.split(&#x22; &#x22;);
+
+      var currentLine;
+      if (sourceMap) {
+        // get position of current match and get current line number
+        currentPos = content.indexOf(matches[i], currentPos);
+        currentLine = currentPos === -1 ? 0 : content.substr(0, currentPos).match(/^/mg).length;
+
+        // sometimes the line matches the leading \n and sometimes it doesn&#x27;t. wierd.
+        // in case it does, increment the current line counter
+        if (leadingWhitespaceMatch[0][0] == &#x27;\n&#x27;) currentLine++;
+
+        mapSelf(current ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-include.toString" id="apidoc.element.gulp-include.toString">
+        function <span class="apidocSignatureSpan">gulp-include.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        // If not in extensions, skip this file
+        if (!inExtensions(globbedFilePath)) continue;
+
+        // Get file contents and apply recursive include on result
+        // Unicode byte order marks are stripped from the start of included files
+        var fileContents = stripBom(fs.readFileSync(globbedFilePath));
+
+        var result = processInclude(fileContents.<span class="apidocCodeKeywordSpan">toString</span>(), globbedFilePath, sourceMap
+);
+        var resultContent = result.content;
+
+        if (sourceMap) {
+var lines = resultContent.match(/^/mg).length; //count lines in result
+
+if (result.map) { // result had a map, merge mappings
+  if (Object.prototype.toString.call(result.map) === &#x27;[object String]&#x27;) {
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.gulp-include.toString" id="apidoc.module.gulp-include.toString">module gulp-include.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-include.toString.toString" id="apidoc.element.gulp-include.toString.toString">
+        function <span class="apidocSignatureSpan">gulp-include.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        // If not in extensions, skip this file
+        if (!inExtensions(globbedFilePath)) continue;
+
+        // Get file contents and apply recursive include on result
+        // Unicode byte order marks are stripped from the start of included files
+        var fileContents = stripBom(fs.readFileSync(globbedFilePath));
+
+        var result = processInclude(fileContents.<span class="apidocCodeKeywordSpan">toString</span>(), globbedFilePath, sourceMap
+);
+        var resultContent = result.content;
+
+        if (sourceMap) {
+var lines = resultContent.match(/^/mg).length; //count lines in result
+
+if (result.map) { // result had a map, merge mappings
+  if (Object.prototype.toString.call(result.map) === &#x27;[object String]&#x27;) {
+...</pre></li>
+    </ul>
+
 
 </div>
 
