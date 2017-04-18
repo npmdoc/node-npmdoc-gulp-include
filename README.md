@@ -1,9 +1,14 @@
-# api documentation for  [gulp-include (v2.3.1)](http://github.com/wiledal/gulp-include)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-include.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-include) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-include.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-include)
+# npmdoc-gulp-include
+
+#### api documentation for  [gulp-include (v2.3.1)](http://github.com/wiledal/gulp-include)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-include.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-include) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-include.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-include)
+
 #### Makes inclusion of files a breeze. Enables functionality similar to that of snockets / sprockets or other file insertion compilation tools.
 
-[![NPM](https://nodei.co/npm/gulp-include.png?downloads=true)](https://www.npmjs.com/package/gulp-include)
+[![NPM](https://nodei.co/npm/gulp-include.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/gulp-include)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-gulp-include/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-gulp-include_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-gulp-include/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-gulp-include/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-gulp-include/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-gulp-include/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-gulp-include/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-gulp-include/build/screenCapture.npmPackageListing.svg)
 
@@ -52,13 +57,11 @@
     "main": "index.js",
     "maintainers": [
         {
-            "name": "wiledal",
-            "email": "hugo.wiledal@gmail.com"
+            "name": "wiledal"
         }
     ],
     "name": "gulp-include",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git://github.com/wiledal/gulp-include.git"
@@ -69,16 +72,6 @@
     "version": "2.3.1"
 }
 ```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module gulp-include](#apidoc.module.gulp-include)
-
-
-
-# <a name="apidoc.module.gulp-include"></a>[module gulp-include](#apidoc.module.gulp-include)
 
 
 
