@@ -1,6 +1,6 @@
 # npmdoc-gulp-include
 
-#### api documentation for  [gulp-include (v2.3.1)](http://github.com/wiledal/gulp-include)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-include.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-include) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-include.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-include)
+#### basic api documentation for  [gulp-include (v2.3.1)](http://github.com/wiledal/gulp-include)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-include.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-include) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-include.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-include)
 
 #### Makes inclusion of files a breeze. Enables functionality similar to that of snockets / sprockets or other file insertion compilation tools.
 
@@ -69,7 +69,8 @@
     "scripts": {
         "test": "mocha"
     },
-    "version": "2.3.1"
+    "version": "2.3.1",
+    "bin": {}
 }
 ```
 
