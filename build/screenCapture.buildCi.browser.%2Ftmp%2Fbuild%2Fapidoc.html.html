@@ -63,28 +63,6 @@
 
         </li>
 
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.gulp-include.toString">
-            function <span class="apidocSignatureSpan">gulp-include.</span>toString
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
-    </ol></li>
-
-    <li class="apidocModuleLi"><a href="#apidoc.module.gulp-include.toString">module gulp-include.toString</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.gulp-include.toString.toString">
-            function <span class="apidocSignatureSpan">gulp-include.</span>toString
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
     </ol></li>
 
 </ol></div>
@@ -226,73 +204,6 @@
 
         mapSelf(current ...</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.gulp-include.toString" id="apidoc.element.gulp-include.toString">
-        function <span class="apidocSignatureSpan">gulp-include.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">toString = function () {
-    return text;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-        // If not in extensions, skip this file
-        if (!inExtensions(globbedFilePath)) continue;
-
-        // Get file contents and apply recursive include on result
-        // Unicode byte order marks are stripped from the start of included files
-        var fileContents = stripBom(fs.readFileSync(globbedFilePath));
-
-        var result = processInclude(fileContents.<span class="apidocCodeKeywordSpan">toString</span>(), globbedFilePath, sourceMap
-);
-        var resultContent = result.content;
-
-        if (sourceMap) {
-var lines = resultContent.match(/^/mg).length; //count lines in result
-
-if (result.map) { // result had a map, merge mappings
-  if (Object.prototype.toString.call(result.map) === '[object String]') {
-...</pre></li>
-    </ul>
-
-
-</div>
-
-<div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.gulp-include.toString" id="apidoc.module.gulp-include.toString">module gulp-include.toString</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.gulp-include.toString.toString" id="apidoc.element.gulp-include.toString.toString">
-        function <span class="apidocSignatureSpan">gulp-include.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-        // If not in extensions, skip this file
-        if (!inExtensions(globbedFilePath)) continue;
-
-        // Get file contents and apply recursive include on result
-        // Unicode byte order marks are stripped from the start of included files
-        var fileContents = stripBom(fs.readFileSync(globbedFilePath));
-
-        var result = processInclude(fileContents.<span class="apidocCodeKeywordSpan">toString</span>(), globbedFilePath, sourceMap
-);
-        var resultContent = result.content;
-
-        if (sourceMap) {
-var lines = resultContent.match(/^/mg).length; //count lines in result
-
-if (result.map) { // result had a map, merge mappings
-  if (Object.prototype.toString.call(result.map) === '[object String]') {
-...</pre></li>
     </ul>
 
 
